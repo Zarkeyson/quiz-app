@@ -8,9 +8,11 @@ export default function JoinPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 gap-6">
 
-      <div className="w-full max-w-sm flex items-center gap-3">
-        <a href="/" className="text-white/50 hover:text-white text-sm transition">← Nazad</a>
+      {/* Header */}
+      <div className="w-full max-w-sm flex items-center justify-between">
+        <a href="/" className="text-white font-medium text-sm bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg transition">← Nazad</a>
         <h1 className="text-white font-semibold text-lg">🎉 Pridruži se</h1>
+        <div className="w-16" />
       </div>
 
       <div className="bg-white border border-gray-200 rounded-2xl p-8 w-full max-w-sm shadow-sm flex flex-col gap-5">

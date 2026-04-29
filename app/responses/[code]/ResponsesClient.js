@@ -107,52 +107,63 @@ export default function ResponsesPage({ code }) {
   if (status === "waiting") {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-10">
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 w-full max-w-md flex flex-col gap-5">
-          <div>
-            <div className="inline-flex items-center gap-2 bg-purple-500/30 text-purple-100 px-3 py-1 rounded-lg text-xs font-medium mb-3">
+        <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-md shadow-sm flex flex-col overflow-hidden">
+
+          {/* Header */}
+          <div className="px-6 pt-6 pb-5 flex flex-col gap-1">
+            <div className="inline-flex items-center gap-2 bg-purple-50 text-purple-700 px-3 py-1 rounded-lg text-xs font-medium mb-2 w-fit">
               🧠 Admin panel
             </div>
-            <h1 className="text-2xl font-medium text-white">{quiz?.title || "Kviz"}</h1>
-            <p className="text-white/50 text-sm mt-1">
-              Kod: <span className="font-bold tracking-widest text-white">{code.toUpperCase()}</span>
+            <h1 className="text-xl font-semibold text-gray-800">{quiz?.title || "Kviz"}</h1>
+            <p className="text-gray-400 text-sm">
+              Kod: <span className="font-bold tracking-widest text-gray-700">{code.toUpperCase()}</span>
               {" · "}{quiz?.questions?.length} pitanja
             </p>
           </div>
-          <hr className="border-white/10" />
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-xs text-white/50 uppercase tracking-wide font-medium">Igrači u čekaonici</p>
-              <span className="bg-indigo-500/30 text-indigo-200 text-xs font-bold px-2 py-0.5 rounded-full">{players.length}</span>
+
+          <hr className="border-gray-100" />
+
+          {/* Igrači */}
+          <div className="px-6 py-5 flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-gray-600 font-semibold">Igrači u čekaonici</p>
+              <span className="bg-indigo-50 text-indigo-600 text-xs font-bold px-2 py-0.5 rounded-full">{players.length}</span>
             </div>
+
             {players.length === 0 ? (
-              <div className="bg-white/5 rounded-xl px-4 py-6 text-center">
-                <p className="text-white/30 text-sm">Niko još nije ušao...</p>
+              <div className="bg-gray-50 rounded-xl px-4 py-6 text-center">
+                <p className="text-gray-400 text-sm">Niko još nije ušao...</p>
                 <div className="flex items-center justify-center gap-2 mt-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-white/20 animate-pulse" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-white/20 animate-pulse" style={{ animationDelay: "0.2s" }} />
-                  <span className="w-1.5 h-1.5 rounded-full bg-white/20 animate-pulse" style={{ animationDelay: "0.4s" }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-300 animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-300 animate-pulse" style={{ animationDelay: "0.2s" }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-300 animate-pulse" style={{ animationDelay: "0.4s" }} />
                 </div>
               </div>
             ) : (
               <div className="flex flex-col gap-2">
                 {players.map((player, i) => (
-                  <div key={player.id} className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-                    <div className="w-7 h-7 rounded-full bg-indigo-500/40 flex items-center justify-center text-xs font-bold text-indigo-200">{i + 1}</div>
-                    <span className="text-white text-sm font-medium">{player.name}</span>
-                    <span className="ml-auto text-xs text-green-400">✓ Spreman</span>
+                  <div key={player.id} className="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3">
+                    <div className="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-600">{i + 1}</div>
+                    <span className="text-gray-700 text-sm font-medium">{player.name}</span>
+                    <span className="ml-auto text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-medium">✓ Spreman</span>
                   </div>
                 ))}
               </div>
             )}
           </div>
-          <button
-            onClick={startQuiz}
-            disabled={players.length === 0 || starting}
-            className="w-full py-3 bg-green-600 hover:bg-green-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition"
-          >
-            {starting ? "Pokretanje..." : `🚀 Pokreni kviz (${players.length} igrača)`}
-          </button>
-          <p className="text-center text-xs text-white/30">Igrači se automatski pojavljuju kada uđu</p>
+
+          {/* Dugme */}
+          <div className="px-6 pb-6 flex flex-col gap-2">
+            <button
+              onClick={startQuiz}
+              disabled={players.length === 0 || starting}
+              className="w-full py-3 bg-green-600 hover:bg-green-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl text-sm font-semibold transition"
+            >
+              {starting ? "Pokretanje..." : `🚀 Pokreni kviz (${players.length} igrača)`}
+            </button>
+            <p className="text-center text-xs text-gray-400">Igrači se automatski pojavljuju kada uđu</p>
+          </div>
+
         </div>
       </div>
     );

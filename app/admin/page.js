@@ -12,6 +12,7 @@ export default function AdminPage() {
   const [quizzes, setQuizzes] = useState([]);
   const [editingQuiz, setEditingQuiz] = useState(null);
   const [editQuestions, setEditQuestions] = useState([]);
+  const [editTitle, setEditTitle] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export default function AdminPage() {
 
   const openEdit = (quiz) => {
     setEditingQuiz(quiz);
+    setEditTitle(quiz.title || "");
     setEditQuestions(quiz.questions.map((q) => ({ ...q })));
   };
 
@@ -48,7 +50,10 @@ export default function AdminPage() {
   const saveEdit = async () => {
     const valid = editQuestions.filter((q) => q.question.trim());
     if (!valid.length) return alert("Unesi bar jedno pitanje");
-    await updateDoc(doc(db, "quizzes", editingQuiz.id), { questions: valid });
+    await updateDoc(doc(db, "quizzes", editingQuiz.id), {
+      questions: valid,
+      title: editTitle.trim() || "Kviz",
+    });
     setEditingQuiz(null);
   };
 
@@ -63,13 +68,10 @@ export default function AdminPage() {
       {/* Header */}
       <div className="w-full max-w-2xl flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <a href="/" className="text-white/50 hover:text-white text-sm transition">← Nazad</a>
+          <a href="/" className="text-white font-medium text-sm bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg transition">← Nazad</a>
           <h1 className="text-white font-semibold text-lg">🧠 Admin panel</h1>
         </div>
-        <a
-          href="/create"
-          className="text-xs bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg transition"
-        >
+        <a href="/create" className="text-sm bg-white text-indigo-600 font-medium px-4 py-2 rounded-lg hover:bg-gray-50 transition shadow-sm">
           + Novi kviz
         </a>
       </div>
@@ -95,8 +97,8 @@ export default function AdminPage() {
               return (
                 <div key={quiz.id} className="flex items-center gap-4 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3">
                   <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-                    <span className="text-gray-800 font-bold tracking-widest text-sm">{quiz.code}</span>
-                    <span className="text-gray-400 text-xs">{quiz.questions?.length} pitanja</span>
+                    <span className="text-gray-800 font-semibold text-sm truncate">{quiz.title || quiz.code}</span>
+                    <span className="text-gray-400 text-xs tracking-widest">{quiz.code} · {quiz.questions?.length} pitanja</span>
                   </div>
 
                   <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${color}`}>{text}</span>
@@ -140,6 +142,19 @@ export default function AdminPage() {
                 ✏️ Uredi <span className="text-indigo-600 tracking-widest">{editingQuiz.code}</span>
               </h2>
               <button onClick={() => setEditingQuiz(null)} className="text-gray-300 hover:text-gray-600 text-2xl leading-none">×</button>
+            </div>
+
+            <hr className="border-gray-100" />
+
+            {/* Naziv */}
+            <div className="flex flex-col gap-1">
+              <label className="text-xs text-gray-400 uppercase tracking-wide font-medium">Naziv kviza</label>
+              <input
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-300"
+                placeholder="Naziv kviza..."
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+              />
             </div>
 
             <hr className="border-gray-100" />
